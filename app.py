@@ -19,15 +19,22 @@ def loadModel():
 
 @app.route('/')
 def index():
-    return {"error": "Page not found"}
+
+    return render_template('home.html')
+
+
+    # return {"error": "Page not found"}
 
 @app.route('/predict',methods=['GET','POST'])
 def predict_datapoint():
 
     global model
+    finalPred=0
 
     if request.method=='GET':
-        return {"error": "Not Allowed Method"}
+        return render_template('index.html', prediction=finalPred)
+        
+        # return {"error": "Not Allowed Method"}
            
     else:
         try:
@@ -36,21 +43,34 @@ def predict_datapoint():
             print("Load Model error",e)
             
 
-        # Get JSON data from the request body
-        data = request.json
-        print(data)
+        # # Get JSON data from the request body
+        # data = request.json
+        # print(data)
 
-        # Access specific data fields from the JSON object
-        age = data.get('age')
-        mileage = data.get('mileage')
-        strock = data.get('strock')
+        # # Access specific data fields from the JSON object
+        # age = data.get('age')
+        # mileage = data.get('mileage')
+        # strock = data.get('strock')
 
-        input_df = pd.DataFrame({'Age':[age],'mileage':[mileage],'stroke_values':[strock]})
+        # age = request.args.get('age')
+        # mileage = request.args.get('mileage')
+        # stroke = request.args.get('stroke')
+
+        age = request.form.get("age")
+        mileage = request.form.get("mileage")
+        stroke = request.form.get("stroke")
+
+        print(type(age))
+        print(type(mileage))
+
+        input_df = pd.DataFrame({'Age':[int(age)],'mileage':[int(mileage)],'stroke_values':[stroke]})
         prediction = model.predict(input_df)
         finalPred = int(np.round(prediction))
 
+        return render_template('index.html', prediction=finalPred)
 
-        return {"Success": finalPred}
+
+        # return {"Success": finalPred}
     
 
 if __name__=="__main__":

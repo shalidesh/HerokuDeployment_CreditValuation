@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            width: 300px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Darker green */
+        }
+    </style>
+</head>
+<body>
+    <form action="/predict" method="post">
+        <label for="age">Age:</label><br>
+        <input type="text" id="age" name="age"><br>
+        <label for="mileage">Mileage:</label><br>
+        <input type="text" id="mileage" name="mileage"><br>
+        <label for="stroke">Stroke:</label><br>
+        <input type="text" id="stroke" name="stroke"><br>
+        <input type="submit" value="Submit">
+    </form>
+    <p>{{prediction}}</p>
+</body>
+</html>

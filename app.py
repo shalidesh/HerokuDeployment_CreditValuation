@@ -2,8 +2,6 @@ from flask import Flask,request,render_template,jsonify
 import joblib
 import pandas as pd
 import numpy as np
-
-
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
@@ -21,7 +19,7 @@ def loadModel():
 
 @app.route('/')
 def index():
-    return render_template('home.html')
+    return render_template('bajaj.html')
 
 
 @app.route('/predict', methods=['GET', 'POST'])
@@ -46,6 +44,8 @@ def predict_datapoint():
             age = request.form.get("age")
             mileage = request.form.get("mileage")
             stroke = request.form.get("stroke")
+        
+        print(f'inputs are :{age},{mileage},{stroke} and types are :{type(age)} ,{type(mileage)},{type(stroke)}')
 
         input_df = pd.DataFrame({'Age': [age], 'mileage': [mileage], 'stroke_values': [stroke]})
         prediction = model.predict(input_df)
@@ -54,13 +54,13 @@ def predict_datapoint():
         if request.is_json:  # if request was json, return json response
             return jsonify({'prediction': finalPred})
         else:  # else return normal template response
-            return render_template('index.html', prediction=finalPred)
+            return render_template('bajaj.html', prediction=finalPred)
 
     elif request.method == 'GET':
-        return render_template('index.html', prediction=finalPred)
+        return render_template('bajaj.html', prediction=finalPred)
 
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)      
+    app.run(host='0.0.0.0', port=port,debug=True)      
 

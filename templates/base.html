@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Website Layout</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #343a40;
+            color: #fff;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #083868;
+        }
+        .brand {
+            padding: 17px;
+        }
+        .nav-link {
+            color: #fff;
+        }
+    </style>
+</head>
+    <div class="sidebar">
+        <div class="brand">
+            <img class="ml-5" src="{{ url_for('static', filename='images/cdb.png') }}" alt="Logo">
+            <h3>Credit Valuation</h3>
+        </div>
+        <ul class="nav flex-column mt-5">
+            <li class="nav-item mt-2 ml-2 mr-2">
+                <a class="nav-link active btn btn-primary" href="#">Bajaj</a>
+            </li>
+            <li class="nav-item mt-2 ml-2 mr-2">
+                <a class="nav-link btn btn-primary" href="#">Nissan</a>
+            </li>
+            <li class="nav-item mt-2 ml-2 mr-2">
+                <a class="nav-link btn btn-primary" href="#">Suzuki</a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="content" style="margin-left:500px;margin-right:300px;margin-top:100px;">
+        {% block body %}
+
+        {% endblock %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

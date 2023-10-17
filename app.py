@@ -21,58 +21,43 @@ def loadModel():
 
 @app.route('/')
 def index():
-
     return render_template('home.html')
 
 
-    # return {"error": "Page not found"}
-
-@app.route('/predict',methods=['GET','POST'])
+@app.route('/predict', methods=['GET', 'POST'])
 def predict_datapoint():
-
     global model
-    finalPred=0
+    finalPred = 0
 
-    if request.method=='GET':
-        return render_template('index.html', prediction=finalPred)
-        
-        # return {"error": "Not Allowed Method"}
-           
-    else:
-        try:
-            model=loadModel()
-        except Exception as e:
-            print("Load Model error",e)
-            
+    try:
+        model = loadModel()
+    except Exception as e:
+        print("Load Model error", e)
 
-        # # Get JSON data from the request body
-        # data = request.json
-        # print(data)
+    if request.method == 'POST':
+        if request.is_json:
+            print("json request")  # check if the request data is of type json
+            data = request.get_json(force=True)  # get data from JSON body
+            age = data.get('age')
+            mileage = data.get('mileage')
+            stroke = data.get('stroke')
+        else:  # if not json, it's form data
+            print("form request")
+            age = request.form.get("age")
+            mileage = request.form.get("mileage")
+            stroke = request.form.get("stroke")
 
-        # # Access specific data fields from the JSON object
-        # age = data.get('age')
-        # mileage = data.get('mileage')
-        # strock = data.get('strock')
-
-        # age = request.args.get('age')
-        # mileage = request.args.get('mileage')
-        # stroke = request.args.get('stroke')
-
-        age = request.form.get("age")
-        mileage = request.form.get("mileage")
-        stroke = request.form.get("stroke")
-
-        print(type(age))
-        print(type(mileage))
-
-        input_df = pd.DataFrame({'Age':[age],'mileage':[mileage],'stroke_values':[stroke]})
+        input_df = pd.DataFrame({'Age': [age], 'mileage': [mileage], 'stroke_values': [stroke]})
         prediction = model.predict(input_df)
         finalPred = int(np.round(prediction))
 
+        if request.is_json:  # if request was json, return json response
+            return jsonify({'prediction': finalPred})
+        else:  # else return normal template response
+            return render_template('index.html', prediction=finalPred)
+
+    elif request.method == 'GET':
         return render_template('index.html', prediction=finalPred)
-
-
-        # return {"Success": finalPred}
 
 
 if __name__ == '__main__':

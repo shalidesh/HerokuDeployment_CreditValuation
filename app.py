@@ -10,6 +10,8 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
 
+import os
+
 
 app = Flask(__name__)
 
@@ -72,7 +74,7 @@ def predict_datapoint():
 
         # return {"Success": finalPred}
 
-        
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)      

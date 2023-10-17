@@ -65,7 +65,7 @@ def predict_datapoint():
         print(type(age))
         print(type(mileage))
 
-        input_df = pd.DataFrame({'Age':[int(age)],'mileage':[int(mileage)],'stroke_values':[stroke]})
+        input_df = pd.DataFrame({'Age':[age],'mileage':[mileage],'stroke_values':[stroke]})
         prediction = model.predict(input_df)
         finalPred = int(np.round(prediction))
 

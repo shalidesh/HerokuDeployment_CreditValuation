@@ -16,7 +16,7 @@ import os
 app = Flask(__name__)
 
 def loadModel():
-    model = joblib.load(open("models/bajaj_3w_pipeline03.pkl",'rb'))
+    model = joblib.load(open("models/bajaj_3w.pkl",'rb'))
     return model
 
 @app.route('/')
@@ -45,22 +45,25 @@ def predict_datapoint():
             yom = data.get('yom')
             mileage = data.get('mileage')
             stroke = data.get('stroke')
+            light = data.get('light')
 
             age  = curr_year - int(yom) if yom else 0
+
         else:  # if not json, it's form data
             print("form request")
             yom = request.form.get("yom")
             mileage = request.form.get("mileage")
             mileage=int(mileage)
             stroke = request.form.get("stroke")
-            
+            light = request.form.get("light")
+
             age  = curr_year - int(yom) if yom else 0
 
         print(f'age is {type(age)}\nmileage is {type(mileage)}\n stroke is {type(stroke)}')
         
         print(f'inputs are :{age},{mileage},{stroke} and types are :{type(age)} ,{type(mileage)},{type(stroke)}')
 
-        input_df = pd.DataFrame({'Age': [age], 'mileage': [int(mileage)], 'stroke_values': [stroke]})
+        input_df = pd.DataFrame({'Age': [age], 'mileage': [int(mileage)], 'stroke_values': [stroke],'S/D Light':[light]})
         prediction = model.predict(input_df)
         finalPred = int(np.round(prediction))
 

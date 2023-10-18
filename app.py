@@ -7,6 +7,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
+import datetime
+
 
 import os
 
@@ -27,6 +29,10 @@ def predict_datapoint():
     global model
     finalPred = 0
 
+    curr_year = datetime.datetime.now().year
+    print(curr_year)
+    print(type(curr_year))
+
     try:
         model = loadModel()
     except Exception as e:
@@ -36,18 +42,25 @@ def predict_datapoint():
         if request.is_json:
             print("json request")  # check if the request data is of type json
             data = request.get_json(force=True)  # get data from JSON body
-            age = data.get('age')
+            yom = data.get('yom')
             mileage = data.get('mileage')
             stroke = data.get('stroke')
+
+            age  = curr_year - int(yom) if yom else 0
         else:  # if not json, it's form data
             print("form request")
-            age = request.form.get("age")
+            yom = request.form.get("yom")
             mileage = request.form.get("mileage")
+            mileage=int(mileage)
             stroke = request.form.get("stroke")
+            
+            age  = curr_year - int(yom) if yom else 0
+
+        print(f'age is {type(age)}\nmileage is {type(mileage)}\n stroke is {type(stroke)}')
         
         print(f'inputs are :{age},{mileage},{stroke} and types are :{type(age)} ,{type(mileage)},{type(stroke)}')
 
-        input_df = pd.DataFrame({'Age': [age], 'mileage': [mileage], 'stroke_values': [stroke]})
+        input_df = pd.DataFrame({'Age': [age], 'mileage': [int(mileage)], 'stroke_values': [stroke]})
         prediction = model.predict(input_df)
         finalPred = int(np.round(prediction))
 

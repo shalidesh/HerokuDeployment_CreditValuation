@@ -16,7 +16,7 @@ import os
 app = Flask(__name__)
 
 def loadModel():
-    model = joblib.load(open("models/bajaj_3w.pkl",'rb'))
+    model = joblib.load(open("models/bajaj_3wNEW_RandomForest_8045.pkl",'rb'))
     return model
 
 @app.route('/')
@@ -63,7 +63,7 @@ def predict_datapoint():
         
         print(f'inputs are :{age},{mileage},{stroke} and types are :{type(age)} ,{type(mileage)},{type(stroke)}')
 
-        input_df = pd.DataFrame({'Age': [age], 'mileage': [int(mileage)], 'stroke_values': [stroke],'S/D Light':[light]})
+        input_df = pd.DataFrame({'Age': [age], 'mileage': [int(mileage)], 'stroke_values': [stroke],'Light Type':[light]})
         prediction = model.predict(input_df)
         finalPred = int(np.round(prediction))
 

@@ -63,9 +63,7 @@ def predict_datapoint():
 
             if request.is_json:
                 pass
-                
             else: 
-                print("form request")
                 data=CustomData(
                     yom=request.form.get('yom'),
                     milage=request.form.get('mileage'),

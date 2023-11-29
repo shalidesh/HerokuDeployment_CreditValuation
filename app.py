@@ -75,12 +75,13 @@ def predict_datapoint():
 
                 pred_df=data.get_data_as_data_frame()
         
-                predict_pipeline=PredictPipeline(model_path_location=model_path_location_3w)
+                # predict_pipeline=PredictPipeline(model_path_location=model_path_location_3w)
                 
-                results=predict_pipeline.predict(pred_df)
+                # results=predict_pipeline.predict(pred_df)
                 
 
-                return render_template('bajaj.html', prediction=int(np.round(results[0])))
+                # return render_template('bajaj.html', prediction=int(np.round(results[0])))
+                return render_template('bajaj.html', prediction=50000)
 
         # elif manufacture=="suzuki":
 

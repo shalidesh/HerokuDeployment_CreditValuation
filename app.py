@@ -16,7 +16,7 @@ import json
 app = Flask(__name__)
 
 
-df=pd.read_csv('datasets\\Suzuki_with_sub_models_new_v6.csv')
+df=pd.read_csv('datasets/Suzuki_with_sub_models_new_v6.csv')
 df=df[['Age','Mileage','Engine_Capacity','Model','Fuel_Type','Transmission','Price']]
 
 model_options = df['Model'].unique()
@@ -24,7 +24,7 @@ fuel_type_options = df['Fuel_Type'].unique()
 transmission_options = df['Transmission'].unique()
 
 
-df1=pd.read_csv('datasets\\foretest_Toyota_v2.csv')
+df1=pd.read_csv('datasets/foretest_Toyota_v2.csv')
 df1=df1[['Age','Mileage','Engine_Capacity','Model','Fuel_Type','Transmission','Price']]
 
 model_options1 = df1['Model'].unique()
@@ -88,7 +88,7 @@ def predict_datapoint():
             else: 
                 yom=request.form.get('yom')
 
-                with open('constant\constants_suzuki.json') as json_file:
+                with open('constant/constants_suzuki.json') as json_file:
                     data = json.load(json_file)
 
                 milage=data[yom]
@@ -120,7 +120,7 @@ def predict_datapoint():
             else: 
                 yom=request.form.get('yom')
                 
-                with open('constant\constant_toyoto.json') as json_file:
+                with open('constant/constant_toyoto.json') as json_file:
                     data = json.load(json_file)
 
                 milage=data[yom]

@@ -1,5 +1,4 @@
 from flask import Flask,request,render_template,jsonify
-import joblib
 import pandas as pd
 import numpy as np
 from sklearn.compose import ColumnTransformer

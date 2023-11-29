@@ -62,7 +62,8 @@ def predict_datapoint():
         if manufacture=="bajaj":
 
             if request.is_json:
-                pass
+                return render_template('bajaj.html')
+                
             else: 
                 data=CustomData(
                     yom=request.form.get('yom'),
@@ -84,7 +85,7 @@ def predict_datapoint():
         elif manufacture=="suzuki":
 
             if request.is_json:
-                pass    
+                 return render_template('suzuki.html',model_options=model_options,fuel_type_options=fuel_type_options,transmission_options=transmission_options)  
             else: 
                 yom=request.form.get('yom')
 
@@ -116,7 +117,7 @@ def predict_datapoint():
         elif manufacture=="toyota":
 
             if request.is_json:
-                pass    
+                return render_template('toyota.html', model_options=model_options1,fuel_type_options=fuel_type_options1,transmission_options=transmission_options1)
             else: 
                 yom=request.form.get('yom')
                 

@@ -12,17 +12,12 @@ class PredictPipeline:
 
     def predict(self,features):
         try:
-            print(features)
-
             model_path=os.path.join(self.model_path_location,"model.pkl")
             preprocessor_path=os.path.join(self.model_path_location,"preprocessor.pkl")
-            print("Before Loading")
             model=load_object(file_path=model_path)
             preprocessor=load_object(file_path=preprocessor_path)
-            print("After Loading")
             data_scaled=preprocessor.transform(features)
             preds=model.predict(data_scaled)
-            # preds=[5000]
             return preds
         
         except Exception as e:

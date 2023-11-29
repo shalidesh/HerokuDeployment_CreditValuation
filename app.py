@@ -82,71 +82,71 @@ def predict_datapoint():
 
                 return render_template('bajaj.html', prediction=int(np.round(results[0])))
 
-        elif manufacture=="suzuki":
+        # elif manufacture=="suzuki":
 
-            if request.is_json:
-                 return render_template('suzuki.html',model_options=model_options,fuel_type_options=fuel_type_options,transmission_options=transmission_options)  
-            else: 
-                yom=request.form.get('yom')
+        #     if request.is_json:
+        #          return render_template('suzuki.html',model_options=model_options,fuel_type_options=fuel_type_options,transmission_options=transmission_options)  
+        #     else: 
+        #         yom=request.form.get('yom')
 
-                with open('constant/constants_suzuki.json') as json_file:
-                    data = json.load(json_file)
+        #         with open('constant/constants_suzuki.json') as json_file:
+        #             data = json.load(json_file)
 
-                milage=data[yom]
-                print(milage)
+        #         milage=data[yom]
+        #         print(milage)
                 
 
-                data=CustomDataAutoFinance(
-                    yom=request.form.get('yom'),
-                    model=request.form.get('model'),
-                    milage=milage,
-                    engine_capacity=request.form.get('engine_capacity'),
-                    fuel=request.form.get('fuel'),
-                    transmission=request.form.get('transmission')
+        #         data=CustomDataAutoFinance(
+        #             yom=request.form.get('yom'),
+        #             model=request.form.get('model'),
+        #             milage=milage,
+        #             engine_capacity=request.form.get('engine_capacity'),
+        #             fuel=request.form.get('fuel'),
+        #             transmission=request.form.get('transmission')
 
-                )
+        #         )
            
-                pred_df=data.get_data_as_data_frame()
+        #         pred_df=data.get_data_as_data_frame()
               
-                predict_pipeline=PredictPipeline(model_path_location=model_path_location_suzuki)
+        #         predict_pipeline=PredictPipeline(model_path_location=model_path_location_suzuki)
                 
-                results=predict_pipeline.predict(pred_df)
+        #         results=predict_pipeline.predict(pred_df)
                 
-                return render_template('suzuki.html',model_options=model_options,fuel_type_options=fuel_type_options,transmission_options=transmission_options, prediction=int(np.round(results[0])))
+        #         return render_template('suzuki.html',model_options=model_options,fuel_type_options=fuel_type_options,transmission_options=transmission_options, prediction=int(np.round(results[0])))
 
-        elif manufacture=="toyota":
+        # elif manufacture=="toyota":
 
-            if request.is_json:
-                return render_template('toyota.html', model_options=model_options1,fuel_type_options=fuel_type_options1,transmission_options=transmission_options1)
-            else: 
-                yom=request.form.get('yom')
+        #     if request.is_json:
+        #         return render_template('toyota.html', model_options=model_options1,fuel_type_options=fuel_type_options1,transmission_options=transmission_options1)
+        #     else: 
+        #         yom=request.form.get('yom')
                 
-                with open('constant/constant_toyoto.json') as json_file:
-                    data = json.load(json_file)
+        #         with open('constant/constant_toyoto.json') as json_file:
+        #             data = json.load(json_file)
 
-                milage=data[yom]
-                print(milage)
+        #         milage=data[yom]
+        #         print(milage)
                 
 
-                data=CustomDataAutoFinance(
-                    yom=request.form.get('yom'),
-                    model=request.form.get('model'),
-                    milage=milage,
-                    engine_capacity=request.form.get('engine_capacity'),
-                    fuel=request.form.get('fuel'),
-                    transmission=request.form.get('transmission')
+        #         data=CustomDataAutoFinance(
+        #             yom=request.form.get('yom'),
+        #             model=request.form.get('model'),
+        #             milage=milage,
+        #             engine_capacity=request.form.get('engine_capacity'),
+        #             fuel=request.form.get('fuel'),
+        #             transmission=request.form.get('transmission')
 
-                )
+        #         )
             
-                pred_df=data.get_data_as_data_frame()
+        #         pred_df=data.get_data_as_data_frame()
                 
-                predict_pipeline=PredictPipeline(model_path_location=model_path_location_toyota)
+        #         predict_pipeline=PredictPipeline(model_path_location=model_path_location_toyota)
                 
-                results=predict_pipeline.predict(pred_df)
+        #         results=predict_pipeline.predict(pred_df)
                 
                 
 
-                return render_template('toyota.html', prediction=int(np.round(results[0])))
+        #         return render_template('toyota.html', prediction=int(np.round(results[0])))
 
 
     elif request.method == 'GET':

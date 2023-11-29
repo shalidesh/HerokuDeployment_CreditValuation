@@ -4,14 +4,19 @@
 
 
 <form method="post" action="/predict">
+
+    <div class="form-group">
+      <input type="hidden" name="manufacture" value="bajaj">
+    </div>
+    
     <div class="form-group">
         <label for="yom">YOM</label>
-        <input type="number" class="form-control" id="yom" placeholder="Enter YOM"  name="yom">
+        <input type="number" class="form-control" id="yom" placeholder="Enter YOM"  name="yom" required>
       </div>
 
       <div class="form-group">
         <label for="mileage">Mileage</label>
-        <input type="number" class="form-control" id="mileage" placeholder="Enter Mileage" name="mileage">
+        <input type="number" class="form-control" id="mileage" placeholder="Enter Mileage" name="mileage" required>
       </div>
 
     <div class="form-group">

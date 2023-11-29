@@ -8,72 +8,150 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
 import datetime
-
-
+from pipelines.predict_pipeline import CustomData,CustomDataAutoFinance,PredictPipeline
 import os
+import json
 
 
 app = Flask(__name__)
 
-def loadModel():
-    model = joblib.load(open("models/bajaj_3wNEW_RandomForest_8045.pkl",'rb'))
-    return model
+
+df=pd.read_csv('datasets\\Suzuki_with_sub_models_new_v6.csv')
+df=df[['Age','Mileage','Engine_Capacity','Model','Fuel_Type','Transmission','Price']]
+
+model_options = df['Model'].unique()
+fuel_type_options = df['Fuel_Type'].unique()
+transmission_options = df['Transmission'].unique()
+
+
+df1=pd.read_csv('datasets\\foretest_Toyota_v2.csv')
+df1=df1[['Age','Mileage','Engine_Capacity','Model','Fuel_Type','Transmission','Price']]
+
+model_options1 = df1['Model'].unique()
+fuel_type_options1 = df1['Fuel_Type'].unique()
+transmission_options1 = df1['Transmission'].unique()
+
+model_path_location_3w=os.path.join("models","bajaj")
+model_path_location_suzuki=os.path.join("models","suzuki")
+model_path_location_toyota=os.path.join("models","toyota")
+
+
 
 @app.route('/')
 def index():
     return render_template('bajaj.html')
 
 
+@app.route('/suzuki')
+def suzuki():
+    return render_template('suzuki.html',model_options=model_options,fuel_type_options=fuel_type_options,transmission_options=transmission_options)
+
+@app.route('/toyota')
+def toyota():
+    return render_template('suzuki.html',model_options=model_options1,fuel_type_options=fuel_type_options1,transmission_options=transmission_options1)
+
+
+
 @app.route('/predict', methods=['GET', 'POST'])
 def predict_datapoint():
-    global model
-    finalPred = 0
 
-    curr_year = datetime.datetime.now().year
-    print(curr_year)
-    print(type(curr_year))
-
-    try:
-        model = loadModel()
-    except Exception as e:
-        print("Load Model error", e)
-
+    manufacture = request.form.get('manufacture')
+    
     if request.method == 'POST':
-        if request.is_json:
-            print("json request")  # check if the request data is of type json
-            data = request.get_json(force=True)  # get data from JSON body
-            yom = data.get('yom')
-            mileage = data.get('mileage')
-            stroke = data.get('stroke')
-            light = data.get('light')
 
-            age  = curr_year - int(yom) if yom else 0
+        if manufacture=="bajaj":
 
-        else:  # if not json, it's form data
-            print("form request")
-            yom = request.form.get("yom")
-            mileage = request.form.get("mileage")
-            mileage=int(mileage)
-            stroke = request.form.get("stroke")
-            light = request.form.get("light")
+            if request.is_json:
+                pass
+                
+            else: 
+                print("form request")
+                data=CustomData(
+                    yom=request.form.get('yom'),
+                    milage=request.form.get('mileage'),
+                    strock=request.form.get('stroke'),
+                    light_type=request.form.get('light'),
 
-            age  = curr_year - int(yom) if yom else 0
+                )
 
-        print(f'age is {type(age)}\nmileage is {type(mileage)}\n stroke is {type(stroke)}')
+                pred_df=data.get_data_as_data_frame()
         
-        print(f'inputs are :{age},{mileage},{stroke} and types are :{type(age)} ,{type(mileage)},{type(stroke)}')
+                predict_pipeline=PredictPipeline(model_path_location=model_path_location_3w)
+                
+                results=predict_pipeline.predict(pred_df)
+                
 
-        input_df = pd.DataFrame({'Age': [age], 'mileage': [int(mileage)], 'stroke_values': [stroke],'Light Type':[light]})
-        prediction = model.predict(input_df)
-        finalPred = int(np.round(prediction))
+                return render_template('bajaj.html', prediction=int(np.round(results[0])))
 
-        if request.is_json:  # if request was json, return json response
-            return jsonify({'prediction': finalPred})
-        else:  # else return normal template response
-            return render_template('bajaj.html', prediction=finalPred)
+        elif manufacture=="suzuki":
+
+            if request.is_json:
+                pass    
+            else: 
+                yom=request.form.get('yom')
+
+                with open('constant\constants_suzuki.json') as json_file:
+                    data = json.load(json_file)
+
+                milage=data[yom]
+                print(milage)
+                
+
+                data=CustomDataAutoFinance(
+                    yom=request.form.get('yom'),
+                    model=request.form.get('model'),
+                    milage=milage,
+                    engine_capacity=request.form.get('engine_capacity'),
+                    fuel=request.form.get('fuel'),
+                    transmission=request.form.get('transmission')
+
+                )
+           
+                pred_df=data.get_data_as_data_frame()
+              
+                predict_pipeline=PredictPipeline(model_path_location=model_path_location_suzuki)
+                
+                results=predict_pipeline.predict(pred_df)
+                
+                return render_template('suzuki.html',model_options=model_options,fuel_type_options=fuel_type_options,transmission_options=transmission_options, prediction=int(np.round(results[0])))
+
+        elif manufacture=="toyota":
+
+            if request.is_json:
+                pass    
+            else: 
+                yom=request.form.get('yom')
+                
+                with open('constant\constant_toyoto.json') as json_file:
+                    data = json.load(json_file)
+
+                milage=data[yom]
+                print(milage)
+                
+
+                data=CustomDataAutoFinance(
+                    yom=request.form.get('yom'),
+                    model=request.form.get('model'),
+                    milage=milage,
+                    engine_capacity=request.form.get('engine_capacity'),
+                    fuel=request.form.get('fuel'),
+                    transmission=request.form.get('transmission')
+
+                )
+            
+                pred_df=data.get_data_as_data_frame()
+                
+                predict_pipeline=PredictPipeline(model_path_location=model_path_location_toyota)
+                
+                results=predict_pipeline.predict(pred_df)
+                
+                
+
+                return render_template('toyota.html', prediction=int(np.round(results[0])))
+
 
     elif request.method == 'GET':
-        return render_template('bajaj.html', prediction=finalPred)
+        return render_template('bajaj.html')
 
 
 if __name__ == '__main__':

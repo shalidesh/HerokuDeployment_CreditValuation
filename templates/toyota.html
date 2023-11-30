@@ -2,6 +2,8 @@
 
 {% block body %}
 
+<h1>TOYOTA</h1>
+
 
 <form method="post" action="/predict">
 
@@ -11,7 +13,7 @@
 
       <div class="form-group">
         <label for="yom">YOM</label>
-        <input type="number" class="form-control" id="yom" placeholder="Enter YOM"  name="yom">
+        <input type="number" class="form-control" id="yom" placeholder="Enter YOM"  name="yom" required>
       </div>
 
     <div class="form-group">
@@ -29,7 +31,7 @@
 
      <div class="form-group">
         <label for="engine_capacity">Engine Capacity</label>
-        <input type="number" class="form-control" id="engine_capacity" placeholder="Enter Engine Capacity" name="engine_capacity">
+        <input type="number" class="form-control" id="engine_capacity" placeholder="Enter Engine Capacity" name="engine_capacity" required>
       </div>
 
     <div class="form-group">

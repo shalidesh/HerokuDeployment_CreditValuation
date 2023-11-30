@@ -6,14 +6,14 @@ import datetime
 
 
 class PredictPipeline:
-    def __init__(self):
-        pass
+    def __init__(self,modelpath:str):
+        self.model_location=modelpath
         
 
     def predict(self,features):
         try:
-            model_path=os.path.join("models","model.pkl")
-            preprocessor_path=os.path.join("models","preprocessor.pkl")
+            model_path=os.path.join(self.model_location,"model.pkl")
+            preprocessor_path=os.path.join(self.model_location,"preprocessor.pkl")
             print("model before loading")
             model=load_object(file_path=model_path)
             print("model after loading")

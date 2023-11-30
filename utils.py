@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pickle
 
-from exception import CustomException
+
 
     
 def load_object(file_path):
@@ -13,4 +13,4 @@ def load_object(file_path):
             return pickle.load(file_obj)
 
     except Exception as e:
-        raise CustomException(e, sys)
+        print("error occured at model loading",e)

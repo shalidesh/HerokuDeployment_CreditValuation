@@ -30,7 +30,7 @@ model_options_t,fuel_type_options_t,transmission_options_t=getVehicleModels(toyo
 
 @app.route('/')
 def index():
-    return render_template('bajaj.html')
+    return render_template('suzuki.html',model_options=model_options,fuel_type_options=fuel_type_options,transmission_options=transmission_options)
 
 
 @app.route('/suzuki')
@@ -107,7 +107,7 @@ def predict_datapoint():
                     
             return render_template('toyota.html',model_options=model_options_t,fuel_type_options=fuel_type_options_t,transmission_options=transmission_options_t, prediction=int(np.round(results[0])))
         
-        
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))
     app.run(host='0.0.0.0', port=port,debug=True)    
